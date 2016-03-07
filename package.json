@@ -1,0 +1,18 @@
+{
+  "name": "tarikgambar",
+  "version": "0.1.0",
+  "description": "Save image from internet",
+  "main": "index.js",
+  "bin": {
+    "tarikgambar": "./index.js"
+  },
+  "keywords": [
+    "image",
+    "download"
+  ],
+  "author": "Alwin Arrasyid <alwin.ridd@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.9.0"
+  }
+}
