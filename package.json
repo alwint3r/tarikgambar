@@ -4,7 +4,10 @@
   "description": "Save image from internet",
   "main": "index.js",
   "bin": {
-    "tarikgambar": "./index.js"
+    "tarikgambar": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "mocha"
   },
   "keywords": [
     "image",
@@ -14,5 +17,8 @@
   "license": "MIT",
   "dependencies": {
     "commander": "^2.9.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5"
   }
 }

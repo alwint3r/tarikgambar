@@ -1,48 +1,51 @@
-#!/usr/bin/env node
 'use strict';
 
-const http = require('http');
-const https = require('https');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
-const commander = require('commander');
+const makeRequest = require('./helper/makeRequest');
 
-commander
-    .version('0.1.0')
-    .option('-u, --url [url]', 'Image source')
-    .option('-o, --output [output]', 'Output file name')
-    .parse(process.argv);
+module.exports = function downloadImage(options, callback) {
+    if (!options.url) {
+        return callback(new Error('You need to specify image url'));
+    }
 
-if (!commander.url) {
-    console.error('Error: You need to specify image url');
-    commander.outputHelp();
+    const parsedUrl = url.parse(options.url);
 
-    return process.exit(1);
-}
+    if (!options.outputType) {
+        options.outputType = 'stream';
 
-const parsedUrl = url.parse(commander.url);
-const reqOptions = {
-    hostname: parsedUrl.hostname,
-    path: parsedUrl.path,
-    protocol: parsedUrl.protocol,
-    headers: {
-        'Accept': 'image/png, image/jpeg, image/gif, image/webp',
-    },
-    method: 'GET',
+        return makeRequest(parsedUrl, callback);
+    }
+
+    if (options.outputType === 'file') {
+        if (!options.outputDir) {
+            return callback(new Error('Output file directory path must be given'));
+        }
+
+        if (!options.filename) {
+            options.filename = parsedUrl.path.split('/').slice(-1)[0];
+        }
+
+        return fs.stat(options.outputDir, (err, stat) => {
+            if (err) {
+                return callback(err);
+            }
+
+            if (!stat) {
+                return callback(err);
+            }
+
+            return makeRequest(parsedUrl, (err, stream) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                const outputPath = path.join(options.outputDir, options.filename);
+                stream.pipe(fs.createWriteStream(outputPath));
+
+                return callback(null, outputPath);
+            });
+        });
+    }
 };
-
-let outputPath = commander.output;
-
-if (!commander.output) {
-    outputPath = reqOptions.path.split('/').slice(-1)[0];
-}
-
-const prot = reqOptions.protocol === 'https:' ? https : http;
-const outputStream = fs.createWriteStream(outputPath);
-const req = prot.request(reqOptions, res => {
-    console.log(res.headers);
-    res.pipe(outputStream);
-});
-
-req.end();
