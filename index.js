@@ -1,28 +1,28 @@
 'use strict';
 
+const Promise = require('bluebird');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
 const makeRequest = require('./helper/makeRequest');
+const validateOpts = require('./helper/validateOptions');
 
-module.exports = function downloadImage(options, callback) {
-    if (!options.url) {
-        return callback(new Error('You need to specify image url'));
+exports.pull = function pull(options, callback) {
+    try {
+        validateOpts(options);
+    } catch (ex) {
+        return callback(ex);
     }
 
     const parsedUrl = url.parse(options.url);
 
     if (!options.outputType) {
-        options.outputType = 'stream';
+        // default to `stream`
 
         return makeRequest(parsedUrl, callback);
     }
 
     if (options.outputType === 'file') {
-        if (!options.outputDir) {
-            return callback(new Error('Output file directory path must be given'));
-        }
-
         if (!options.filename) {
             options.filename = parsedUrl.path.split('/').slice(-1)[0];
         }
@@ -49,3 +49,5 @@ module.exports = function downloadImage(options, callback) {
         });
     }
 };
+
+exports.pullAsync = Promise.promisify(exports.pull);

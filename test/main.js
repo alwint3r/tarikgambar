@@ -2,9 +2,9 @@
 
 const assert = require('assert');
 const fs = require('fs');
-const tarikgambar = require('../');
+const tarikgambar = require('../').pull;
 
-describe('tarikgambar(options, callback)', function() {
+describe('tarikgambar.pull(options, callback)', function() {
     it('Should call callback with error if url is not defined', function (done) {
         tarikgambar({ outputType: 'file' }, err => {
             assert(err);
@@ -69,7 +69,6 @@ describe('tarikgambar(options, callback)', function() {
             };
 
             tarikgambar(opt, (err, stream) => {
-
                 // Naive test.
                 assert(stream);
                 assert(stream.on);

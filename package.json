@@ -6,6 +6,10 @@
   "bin": {
     "tarikgambar": "./bin/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alwint3r/tarikgambar.git"
+  },
   "scripts": {
     "test": "mocha"
   },
@@ -16,6 +20,7 @@
   "author": "Alwin Arrasyid <alwin.ridd@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "bluebird": "^3.3.4",
     "commander": "^2.9.0"
   },
   "devDependencies": {
