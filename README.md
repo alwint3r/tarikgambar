@@ -1,6 +1,6 @@
 # Tarikgambar
 
-Simple image download command line tool & module for node.js. Supports `image/png`, `image/gif`, `image/jpeg` types.
+Simple image download command line tool & module for node.js. Supports `image/png`, `image/gif`, `image/jpeg`, `image/webp` types.
 
 Tested with Node v4.x.x.
 
@@ -37,7 +37,7 @@ Parameters:
 
 Example 1 (stream):
 ```
-tarikgambar.pull({ url: 'http://placeimg.com/300/300/people' }, (err, response) => {
+tarikgambar.pull({ url: 'http://example.com/path/to/some/image.png' }, (err, response) => {
     if (err) {
         // handle error
     }
@@ -52,7 +52,7 @@ tarikgambar.pull({ url: 'http://placeimg.com/300/300/people' }, (err, response) 
 Example 2 (path):
 ```
 const options = {
-    url: 'http://placeimg.com/300/300/people',
+    url: 'http://example.com/path/to/some/image.png',
     outputType: 'file',
     outputDir: '/home/winter/',
     outputname: 'downloaded.png',
@@ -73,7 +73,7 @@ Return promise that will be rejecter or resolve to either path to a file or resp
 
 Example 1 (stream):
 ```
-tarikgambar.pullAsync({ url: 'http://placeimg.com/300/300/people' }).then(response => {
+tarikgambar.pullAsync({ url: 'http://example.com/path/to/some/image.png' }).then(response => {
     // write stream to a file or send it to browser.
     response.on('data', chunk => {
         // do something.
@@ -87,13 +87,13 @@ tarikgambar.pullAsync({ url: 'http://placeimg.com/300/300/people' }).then(respon
 Example 2 (path):
 ```
 const options = {
-    url: 'http://placeimg.com/300/300/people',
+    url: 'http://example.com/path/to/some/image.png',
     outputType: 'file',
     outputDir: '/home/winter/',
     outputname: 'downloaded.png',
 };
 
-tarikgambar.pullAsync({ url: 'http://placeimg.com/300/300/people' }).then(path => {
+tarikgambar.pullAsync({ url: 'http://example.com/path/to/some/image.png' }).then(path => {
     console.log('The image file is saved to: ', path);
 })
 .catch(err => {
