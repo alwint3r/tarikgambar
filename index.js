@@ -42,9 +42,10 @@ exports.pull = function pull(options, callback) {
                 }
 
                 const outputPath = path.join(options.outputDir, options.filename);
-                stream.pipe(fs.createWriteStream(outputPath));
+                stream.pipe(fs.createWriteStream(outputPath), { end: false });
 
-                return callback(null, outputPath);
+                stream.on('end', () => callback(null, outputPath));
+                stream.on('error', callback);
             });
         });
     }
