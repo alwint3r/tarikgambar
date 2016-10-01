@@ -71,7 +71,20 @@ describe('tarikgambar.pull(options, callback)', function() {
             tarikgambar(opt, (err, stream) => {
                 // Naive test.
                 assert(stream);
-                assert(stream.on);
+                assert(typeof stream.on === 'function');
+                done();
+            });
+        });
+
+        it('Should return callback with stream if outputType is "stream"', function (done) {
+            const opt = {
+                url: 'http://placeimg.com/64/64/people',
+                outputType: 'stream',
+            };
+
+            tarikgambar(opt, (err, stream) => {
+                assert(stream)
+                assert(typeof stream.on === 'function');
                 done();
             });
         });

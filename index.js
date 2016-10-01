@@ -16,7 +16,7 @@ exports.pull = function pull(options, callback) {
 
     const parsedUrl = url.parse(options.url);
 
-    if (!options.outputType) {
+    if (!options.outputType || options.outputType === 'stream') {
         // default to `stream`
 
         return makeRequest(parsedUrl, callback);

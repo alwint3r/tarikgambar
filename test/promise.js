@@ -58,9 +58,8 @@ describe('tarikgambar.pullAsync(options) -> Promise', function () {
         });
     });
 
-    describe('options.outputType === stream ', function() {
+    describe('options.outputType === stream ', function () {
         it('Should return resolved promise with stream', function () {
-
             const opt = {
                 url: 'http://placeimg.com/64/64/people',
                 outputType: 'stream',
@@ -69,7 +68,20 @@ describe('tarikgambar.pullAsync(options) -> Promise', function () {
             tarikgambar(opt).then(stream => {
                 // Naive test.
                 assert(stream);
-                assert(stream.on);
+                assert(typeof stream.on === 'function');
+                done();
+            });
+        });
+
+        it('Should return resolved promise with streaim if outputType is undefined', function () {
+            const opt = {
+                url: 'http://placeimg.com/64/64/people',
+            };
+
+            tarikgambar(opt).then(stream => {
+                // Naive test.
+                assert(stream);
+                assert(typeof stream.on === 'function');
                 done();
             });
         });

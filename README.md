@@ -55,7 +55,7 @@ const options = {
     url: 'http://example.com/path/to/some/image.png',
     outputType: 'file',
     outputDir: '/home/winter/',
-    outputname: 'downloaded.png',
+    filename: 'downloaded.png',
 };
 
 tarikgambar.pull(options, (err, path) => {
@@ -90,7 +90,7 @@ const options = {
     url: 'http://example.com/path/to/some/image.png',
     outputType: 'file',
     outputDir: '/home/winter/',
-    outputname: 'downloaded.png',
+    filename: 'downloaded.png',
 };
 
 tarikgambar.pullAsync({ url: 'http://example.com/path/to/some/image.png' }).then(path => {
