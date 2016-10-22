@@ -1,6 +1,6 @@
 {
   "name": "tarikgambar",
-  "version": "0.1.3",
+  "version": "1.0.0",
   "description": "Save image from internet",
   "main": "index.js",
   "bin": {
