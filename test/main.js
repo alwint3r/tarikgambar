@@ -2,6 +2,7 @@
 
 const assert = require('assert');
 const fs = require('fs');
+const path = require('path');
 const tarikgambar = require('../').pull;
 
 describe('tarikgambar.pull(options, callback)', function() {
@@ -15,7 +16,7 @@ describe('tarikgambar.pull(options, callback)', function() {
     describe('options.outputType === file', function() {
         this.timeout(30000);
 
-        it('Should call callback with error if outputDir is not defined', function (done) {
+        it('Should call callback with error if path is not defined', function (done) {
             const opt = {
                 outputType: 'file',
                 url: 'http://placeimg.com/64/64/people',
@@ -27,10 +28,10 @@ describe('tarikgambar.pull(options, callback)', function() {
             });
         });
 
-        it('Should call callback with error if outputDir is not found', function (done) {
+        it('Should call callback with error if path dir is not found', function (done) {
             const opt = {
                 outputType: 'file',
-                outputDir: '/home/notfound',
+                outputPath: '/home/notfound/outputname.jpg',
                 url: 'http://placeimg.com/64/64/people',
             };
 
@@ -43,8 +44,7 @@ describe('tarikgambar.pull(options, callback)', function() {
         it('Should call callback with path to downloaded file', function (done) {
             const opt = {
                 outputType: 'file',
-                outputDir: __dirname,
-                filename: 'downloaded.png',
+                outputPath: path.join(__dirname, 'downloaded.png'),
                 url: 'http://placeimg.com/64/64/people',
             };
 

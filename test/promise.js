@@ -2,6 +2,7 @@
 
 const assert = require('assert');
 const fs = require('fs');
+const path = require('path');
 const tarikgambar = require('../').pullAsync;
 
 describe('tarikgambar.pullAsync(options) -> Promise', function () {
@@ -31,7 +32,7 @@ describe('tarikgambar.pullAsync(options) -> Promise', function () {
             const opt = {
                 url: 'http://placeimg.com/32/32',
                 outputType: 'file',
-                outputDir: '/home/NotFound',
+                outputPath: '/home/NotFound/asd.jpg',
             };
 
             tarikgambar(opt).catch(err => {
@@ -44,8 +45,7 @@ describe('tarikgambar.pullAsync(options) -> Promise', function () {
             const opt = {
                 url: 'http://placeimg.com/32/32',
                 outputType: 'file',
-                outputDir: __dirname,
-                filename: 'downloaded.png',
+                outputPath: path.join(__dirname, 'downloaded.png'),
             };
 
             tarikgambar(opt).then(path => {

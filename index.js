@@ -7,32 +7,29 @@ const fs = require('fs');
 const makeRequest = require('./helper/makeRequest');
 const validateOpts = require('./helper/validateOptions');
 
-exports.pull = function pull(options, callback) {
-    try {
-        validateOpts(options);
-    } catch (ex) {
-        return callback(ex);
+function pathFromStream(options, stream, callback) {
+    stream.pipe(fs.createWriteStream(options.outputPath), { end: false });
+    stream.on('end', () => callback(null, options.outputPath));
+    stream.on('error', callback);
+}
+
+function pull(options,callback) {
+    const validationResult = validateOpts(options);
+    if (validationResult.error) {
+        return callback(validationResult.error);
     }
 
     const parsedUrl = url.parse(options.url);
 
     if (!options.outputType || options.outputType === 'stream') {
-        // default to `stream`
-
         return makeRequest(parsedUrl, callback);
     }
 
     if (options.outputType === 'file') {
-        if (!options.filename) {
-            options.filename = parsedUrl.path.split('/').slice(-1)[0];
-        }
+        const outputDir = path.dirname(options.outputPath);
 
-        return fs.stat(options.outputDir, (err, stat) => {
+        return fs.stat(outputDir, (err, stat) => {
             if (err) {
-                return callback(err);
-            }
-
-            if (!stat) {
                 return callback(err);
             }
 
@@ -41,14 +38,13 @@ exports.pull = function pull(options, callback) {
                     return callback(err);
                 }
 
-                const outputPath = path.join(options.outputDir, options.filename);
-                stream.pipe(fs.createWriteStream(outputPath), { end: false });
-
-                stream.on('end', () => callback(null, outputPath));
-                stream.on('error', callback);
+                return pathFromStream(options, stream, callback);
             });
         });
     }
-};
+}
 
-exports.pullAsync = Promise.promisify(exports.pull);
+module.exports = {
+    pull,
+    pullAsync: Promise.promisify(pull),
+};

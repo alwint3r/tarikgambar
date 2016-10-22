@@ -2,7 +2,7 @@
 
 Simple image download command line tool & module for node.js. Supports `image/png`, `image/gif`, `image/jpeg`, `image/webp` types.
 
-Tested with Node v4.x.x.
+Tested with Node v4 and v6.
 
 ## Installing
 
@@ -18,11 +18,14 @@ npm install -g tarikgambar
 npm install tarikgambar
 ```
 
+## Breaking changes from v0 to v1
+
+* Removed `outputDir` and `filename` from configuration object. You should use `outputPath` instead.
+
 ## Configuration
 * `url`: (*String*) - URL of the target image file.
 * `outputType`: (*String*) - This value should be either `stream` or `file`. Default to `stream` if not defined.
-* `outputDir`: (*String*) - Path to the download directory. This field is not used if `outputType` is `stream`.
-* `filename`: (*String*) - Name of the downloaded file. Default to original file name. This field is not used if `outputType` is `stream`.
+* `outputPath`: (*String*) - Path to the output file, will fail if the directory is not exists. This field is not used if `outputType` is `stream`.
 
 ## API
 
@@ -36,7 +39,7 @@ Parameters:
 * `callback`: (*Function(Error, String|Response*) - Callback function to be called on completition.
 
 Example 1 (stream):
-```
+```js
 tarikgambar.pull({ url: 'http://example.com/path/to/some/image.png' }, (err, response) => {
     if (err) {
         // handle error
@@ -50,12 +53,11 @@ tarikgambar.pull({ url: 'http://example.com/path/to/some/image.png' }, (err, res
 ```
 
 Example 2 (path):
-```
+```js
 const options = {
     url: 'http://example.com/path/to/some/image.png',
     outputType: 'file',
-    outputDir: '/home/winter/',
-    filename: 'downloaded.png',
+    outputPath: '/home/winter/downloaded.png',
 };
 
 tarikgambar.pull(options, (err, path) => {
@@ -72,7 +74,7 @@ tarikgambar.pull(options, (err, path) => {
 Return promise that will be rejecter or resolve to either path to a file or response stream depending on `options.outputType` value.
 
 Example 1 (stream):
-```
+```js
 tarikgambar.pullAsync({ url: 'http://example.com/path/to/some/image.png' }).then(response => {
     // write stream to a file or send it to browser.
     response.on('data', chunk => {
@@ -85,12 +87,11 @@ tarikgambar.pullAsync({ url: 'http://example.com/path/to/some/image.png' }).then
 ```
 
 Example 2 (path):
-```
+```js
 const options = {
     url: 'http://example.com/path/to/some/image.png',
     outputType: 'file',
-    outputDir: '/home/winter/',
-    filename: 'downloaded.png',
+    outputPath: '/home/winter/downloaded.png',
 };
 
 tarikgambar.pullAsync({ url: 'http://example.com/path/to/some/image.png' }).then(path => {
